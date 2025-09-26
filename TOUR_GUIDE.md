@@ -27,10 +27,13 @@ That's exactly what the Crypto RSI Scanner is. It's not just a dashboard; it's a
 **ACTION 2: Switch Views for Instant Insights**
 1.  Click the **Heatmap button** in the top-right controls.
 2.  Point out the color variation.
-3.  Click the **KiwiHunt button**.
-4.  Return to the **RSI Chart View**.
+3.  Click the **WaveTrend button** (`fa-water`).
+4.  Click the **KiwiHunt button** (`fa-rocket`).
+5.  Return to the **RSI Chart View** (`fa-chart-line`).
 
-> **SAY:** "But we don't just have one way of looking at the market. For an instant sentiment gauge, we can switch to the **Heatmap view**. Here, deep green means 'extremely oversold' and bright red means 'extremely overbought'. We also have views for Stochastics, WaveTrend, and our proprietary **KiwiHunt indicator**, which is designed to spot high-quality reversals. Every trader has their preference, and this dashboard adapts."
+> **SAY:** "But we don't just have one way of looking at the market. Every trader has their preference, and this dashboard adapts.
+>
+> "For an instant sentiment gauge, we can switch to the **Heatmap view**. Here, deep green means 'extremely oversold' and bright red is 'extremely overbought'. We also have dedicated views for **Stochastics**, **WaveTrend**, our proprietary **KiwiHunt indicator** for spotting high-quality reversals, and of course, a simple **Price** view."
 
 **ACTION 3: Filter and Find What Matters**
 1.  Click the **Star icon** next to a few interesting symbols (e.g., BTCUSDT, SOLUSDT).
@@ -38,7 +41,7 @@ That's exactly what the Crypto RSI Scanner is. It's not just a dashboard; it's a
 3.  Click it again to show all.
 4.  Click the **Sort button** a few times.
 
-> **SAY:** "With hundreds of assets, we need to focus. You can instantly filter to see only your **Favorites**. And more importantly, you can sort the entire market. In this RSI view, one click shows what's most oversold. If we switch to the **KiwiHunt view**, the same button now sorts by its core oscillator, instantly bringing the most interesting setups to the top."
+> **SAY:** "With hundreds of assets, we need to focus. You can instantly filter to see only your **Favorites**. And more importantly, the sort function is intelligent. In this RSI view, one click shows what's most oversold. If we switch to the **WaveTrend view**, the same button now sorts by the WaveTrend oscillator, instantly bringing the most interesting setups to the top."
 
 ---
 
@@ -51,13 +54,15 @@ That's exactly what the Crypto RSI Scanner is. It's not just a dashboard; it's a
 2.  Click on it to open the large modal.
 
 **ACTION 2: Showcase the "Pro" Tools**
-1.  Click the **Price Chart icon** inside the modal.
-2.  Click the **Volume Profile button**. Point to the POC, VAH, and VAL lines.
-3.  Switch to the **KiwiHunt chart view** using the rocket icon. Point to any visible dots or triangles.
+1.  Click the **Price Chart icon** (`fa-chart-area`) inside the modal.
+2.  Click the **Volume Profile button** (`fa-chart-bar`). Point to the POC, VAH, and VAL lines.
+3.  Click the **Fibonacci Levels button** (`fa-wave-square`) to toggle it on.
+4.  Switch to the **WaveTrend chart view** (`fa-water`). Point to any visible green or red dots on the chart.
+5.  Switch to the **KiwiHunt chart view** (`fa-rocket`). Point to any visible dots or triangles.
 
-> **SAY:** "When we open a chart, we unlock our full suite of professional analysis tools. On the price chart, we can overlay institutional tools like **Volume Profile**, which shows us true, volume-backed support and resistance.
+> **SAY:** "When we open a chart, we unlock our full suite of professional analysis tools. On the price chart, we can overlay institutional tools like **Volume Profile**, which shows us true, volume-backed support and resistance. We can also instantly overlay key **Fibonacci Levels** and, on higher timeframes, the **Previous Week's Price Levels**.
 >
-> "But where it gets really powerful is when we switch to our indicator charts, like **KiwiHunt**. Notice these colored dots and triangles? The app is visually showing us exactly where high-probability signal conditions were met, directly on the chart, taking the guesswork out of analysis."
+> "But where it gets really powerful is when we switch to our indicator charts. On the **WaveTrend chart**, you can see these green dots, which visually confirm high-conviction buy signals. On our **KiwiHunt chart**, the app does the same, plotting dots and triangles to show exactly where its proprietary signals have fired."
 
 **ACTION 3: Demonstrate Drawing Tools**
 1.  Switch back to the Price Chart.
@@ -77,13 +82,13 @@ That's exactly what the Crypto RSI Scanner is. It's not just a dashboard; it's a
 2.  Click the **Expand icon**.
 3.  Move your mouse over the top (price) chart.
 
-> **SAY:** "For our RSI and Stochastics charts, we have a Full-Screen Mode. Here we have a large, two-pane layout with the price chart on top and the indicator below. Notice the **synchronized crosshairs**. This allows you to precisely correlate a specific price candle with the exact indicator reading at that moment."
+> **SAY:** "Both our RSI and Stochastics charts have a Full-Screen Mode. Here we have a large, two-pane layout with the price chart on top and the indicator below. Notice the **synchronized crosshairs**. This allows you to precisely correlate a specific price candle with the exact indicator reading at that moment."
 
 **ACTION 2: The "Wow" Moment - Copy to Clipboard**
-1.  Click the **Copy to Clipboard icon** in the toolbar.
+1.  In the full-screen view's header, click the **Copy to Clipboard icon**.
 2.  Wait for the icon to turn into a checkmark.
 
-> **SAY:** "Now for one of our most popular features. You've done your analysis, you've marked up your chart. With one click... *(wait for checkmark)*... the app has just copied a professional, high-resolution image of this entire view to your clipboard, complete with a timestamp. You can now instantly paste this into Discord, Twitter, or your trading journal to share your insights."
+> **SAY:** "Now for one of our most popular features. You've done your analysis, you've marked up your chart. With one click... *(wait for checkmark)*... the app has just copied a professional, high-resolution image of this entire view to your clipboard, complete with a professional-looking timestamp. You can now instantly paste this into Discord, Twitter, or your trading journal to share your insights."
 
 ---
 
@@ -94,18 +99,49 @@ That's exactly what the Crypto RSI Scanner is. It's not just a dashboard; it's a
 **ACTION 1: Show the Alert Configuration**
 1.  Go back to the main dashboard.
 2.  Click the **Gear icon** > **Configure Alerts**.
-3.  Briefly click through the tabs, pausing on the **KiwiHunt** tab.
+3.  Briefly click through the tabs, pausing on the **KiwiHunt** and **Indicator** tabs.
 
-> **SAY:** "This is the app's brain. You can configure a huge range of alerts, from simple RSI extremes to our proprietary **KiwiHunt signals**, which are designed to catch high-conviction reversals and continuations."
+> **SAY:** "This is the app's brain. You can configure a huge range of alerts, from simple RSI extremes and divergences, to **WaveTrend** confluence signals, and our proprietary **KiwiHunt signals** which are designed to catch high-conviction reversals and continuations."
 
 **ACTION 2: Demonstrate "Click-to-View"**
 1.  Close the modal. Click the **Bell icon** in the header to open the Notification Panel.
-2.  Find a recent **KiwiHunt alert** (e.g., "KiwiHunt: Hunt Buy").
+2.  Find a recent **KiwiHunt or WaveTrend alert** (e.g., "KiwiHunt: Hunt Buy").
 3.  Read the alert out loud.
 
 > **SAY:** "When an alert triggers, you get a toast notification, and it's saved here in your notification history. But here's the magic. We see a 'KiwiHunt: Hunt Buy' alert here for `SOLUSDT` on the 1-hour timeframe. Instead of manually going to find that setup, you just... **(ACTION: Click the notification)**... and the app instantly takes you to the right symbol, on the right timeframe, and **opens the KiwiHunt chart directly.**
 >
 > "This is our 'Click-to-View' system. It takes you from signal to decision in one second."
+
+---
+
+## Part 5: Putting It All Together - Catching a Trade (2 minutes)
+
+"So, we've received our 'KiwiHunt: Hunt Buy' alert for SOLUSDT. This is our signal. Now, let's validate it."
+
+**ACTION 1: Analyze the Indicator & Switch to Price Action**
+1.  You are already on the KiwiHunt modal from the previous step.
+2.  Point to the green dot on the chart.
+3.  Click the **Price Chart icon** (`fa-chart-area`) inside the modal.
+
+> **SAY:** "The app brought us directly to the KiwiHunt chart, and we can see the exact moment the signal fired, confirmed by this green 'Hunt Buy' dot. This looks strong. But an indicator signal is only half the story. With one click... *(click price chart icon)* ...we can immediately see what the price was doing at that exact moment."
+
+**ACTION 2: Build Confluence with Pro Tools**
+1.  On the Price Chart, click the **Volume Profile button**. Point to the Value Area Low (VAL).
+2.  Click the **Fibonacci Levels button**. Point to the Golden Pocket.
+
+> **SAY:** "Now we build our case for the trade. First, let's turn on the **Volume Profile**. Look at that - the price is bouncing right off the Value Area Low. This is a key area of volume-based support.
+>
+> "Next, let's check the **Fibonacci Levels**. It's also bouncing perfectly from the Golden Pocket. We now have three powerful points of confluence: a strong KiwiHunt buy signal, a bounce from a key volume support level, and a bounce from a critical Fibonacci zone."
+
+**ACTION 3: Plan the Trade**
+1.  Select the **Trendline tool**.
+2.  Draw a horizontal line for a potential entry.
+3.  Draw another below the recent low for a stop-loss.
+4.  Draw a third line near the Point of Control (POC) for a target.
+
+> **SAY:** "At this point, we have a high-probability setup. We can use the drawing tools to map out our trade. We have our entry, our stop-loss is clearly defined below this recent swing low, and our primary target could be the Point of Control up here.
+>
+> "And that's the entire workflow. We went from a fully automated, 24/7 alert, to a deep, multi-factor analysis, to a fully planned trade with a clear risk-reward profile, all within about 90 seconds, without ever leaving the app. This is how the scanner helps traders act on high-probability setups with speed and confidence."
 
 ---
 

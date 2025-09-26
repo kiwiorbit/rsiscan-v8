@@ -102,6 +102,11 @@ export interface AlertConditions {
     kiwiHuntHunt: boolean;
     kiwiHuntCrazy: boolean;
     kiwiHuntBuyTrend: boolean;
+    superConfluenceBuy: boolean;
+    superConfluenceSell: boolean;
+    confirmedReversalBuy: boolean;
+    confirmedReversalSell: boolean;
+    trendRiderBuy: boolean;
 }
 
 export interface Settings {
@@ -151,7 +156,7 @@ export interface Notification {
   timeframe: Timeframe;
   rsi?: number;
   price?: number;
-  type: 'overbought' | 'oversold' | 'bullish-cross' | 'death-cross' | 'bullish-divergence' | 'bearish-divergence' | 'stoch-recovery' | 'stoch-bullish-cross' | 'price-golden-pocket' | 'gp-reversal-volume' | 'fib-786-reversal' | 'breakout-volume' | 'capitulation-volume' | 'accumulation-volume' | 'wavetrend-buy' | 'wavetrend-sell' | 'stoch-cross-above-daily-vwap' | 'vwap-reversal-stoch-confirmation' | 'high-conviction-buy' | 'high-conviction-sell' | 'wavetrend-confluence-buy' | 'high-conviction-buy-no-volume' | 'price-rejection-vwap-high' | 'price-bounce-vwap-low' | 'poc-rejection-bullish' | 'poc-rejection-bearish' | 'value-area-rejection-bullish' | 'value-area-rejection-bearish' | 'value-area-breakout-bullish' | 'value-area-breakout-bearish' | 'poc-bounce-low-anchor' | 'poc-rejection-high-anchor' | 'breakout-high-anchor-vah' | 'liquidity-sweep-reversal-bullish' | 'liquidity-sweep-reversal-bearish' | 'kiwi-hunt-buy' | 'kiwi-hunt-sell' | 'kiwi-hunt-crazy-buy' | 'kiwi-hunt-crazy-sell' | 'kiwi-hunt-buy-trend';
+  type: 'overbought' | 'oversold' | 'bullish-cross' | 'death-cross' | 'bullish-divergence' | 'bearish-divergence' | 'stoch-recovery' | 'stoch-bullish-cross' | 'price-golden-pocket' | 'gp-reversal-volume' | 'fib-786-reversal' | 'breakout-volume' | 'capitulation-volume' | 'accumulation-volume' | 'wavetrend-buy' | 'wavetrend-sell' | 'stoch-cross-above-daily-vwap' | 'vwap-reversal-stoch-confirmation' | 'high-conviction-buy' | 'high-conviction-sell' | 'wavetrend-confluence-buy' | 'high-conviction-buy-no-volume' | 'price-rejection-vwap-high' | 'price-bounce-vwap-low' | 'poc-rejection-bullish' | 'poc-rejection-bearish' | 'value-area-rejection-bullish' | 'value-area-rejection-bearish' | 'value-area-breakout-bullish' | 'value-area-breakout-bearish' | 'poc-bounce-low-anchor' | 'poc-rejection-high-anchor' | 'breakout-high-anchor-vah' | 'liquidity-sweep-reversal-bullish' | 'liquidity-sweep-reversal-bearish' | 'kiwi-hunt-buy' | 'kiwi-hunt-sell' | 'kiwi-hunt-crazy-buy' | 'kiwi-hunt-crazy-sell' | 'kiwi-hunt-buy-trend' | 'super-confluence-buy' | 'super-confluence-sell' | 'confirmed-reversal-buy' | 'confirmed-reversal-sell' | 'trend-rider-buy';
   read: boolean;
   body?: string;
   value?: number;

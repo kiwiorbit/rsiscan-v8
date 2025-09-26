@@ -40,7 +40,7 @@ const AlertToggle: React.FC<{
 };
 
 const TABS = [
-    'Indicator', 'Price-Based', 'VWAP', 'Volume Profile', 'Anchored Profile', 'Confluence Strategy', 'KiwiHunt'
+    'Indicator', 'Price-Based', 'VWAP', 'Volume Profile', 'Anchored Profile', 'Confluence Strategy', 'KiwiHunt', 'Super Strategy'
 ];
 
 const AlertsModal: React.FC<AlertsModalProps> = ({ isOpen, onClose, settings, onAlertConditionChange }) => {
@@ -147,6 +147,21 @@ const AlertsModal: React.FC<AlertsModalProps> = ({ isOpen, onClose, settings, on
                                 <AlertToggle condition="kiwiHuntHunt" label="Hunt Signals" description="Hunt Buy & Hunt Sell. Highest quality signals based on a perfect confluence of events. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
                                 <AlertToggle condition="kiwiHuntCrazy" label="Crazy Signals" description="Crazy Buy & Crazy Sell. Strong signals indicating strength from weakness, and vice-versa. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
                                 <AlertToggle condition="kiwiHuntBuyTrend" label="Buy Trend" description="Signals that a shallow pullback is likely over and the bullish trend is resuming. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                            </ul>
+                        </div>
+                    )}
+                     {activeTab === 'Super Strategy' && (
+                        <div>
+                            <h4 className="px-1 pb-2 font-bold text-dark-text dark:text-light-text">Super Confluence Strategies</h4>
+                            <p className="px-1 pb-4 text-sm text-medium-text-light dark:text-medium-text">
+                                These high-conviction alerts combine signals from both WaveTrend and KiwiHunt to identify the highest probability setups.
+                            </p>
+                            <ul className="space-y-2">
+                                <AlertToggle condition="superConfluenceBuy" label="Ultimate Confluence Buy" description="KiwiHunt 'Hunt Buy' AND WaveTrend 'Confluence Buy' fire at the same time. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="superConfluenceSell" label="Ultimate Confluence Sell" description="KiwiHunt 'Hunt Sell' AND a bearish WaveTrend cross in the overbought zone. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="confirmedReversalBuy" label="Confirmed Reversal Buy" description="WaveTrend finds the bottoming area, KiwiHunt confirms the reversal. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="confirmedReversalSell" label="Confirmed Reversal Sell" description="WaveTrend finds the topping area, KiwiHunt confirms the reversal. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="trendRiderBuy" label="Trend Rider Buy" description="A KiwiHunt 'Buy Trend' signal occurs during a clear bullish macro trend (WT2 > 0). (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
                             </ul>
                         </div>
                     )}

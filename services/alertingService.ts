@@ -6,6 +6,19 @@ type Dispatch<A> = (value: A) => void;
 
 const ALERT_COOLDOWN = 3600000; // 1 hour to prevent spam
 
+const TIMEFRAME_TO_MS: Record<Timeframe, number> = {
+    '5m': 5 * 60 * 1000,
+    '15m': 15 * 60 * 1000,
+    '30m': 30 * 60 * 1000,
+    '1h': 60 * 60 * 1000,
+    '2h': 2 * 60 * 60 * 1000,
+    '4h': 4 * 60 * 60 * 1000,
+    '8h': 8 * 60 * 60 * 1000,
+    '1d': 24 * 60 * 60 * 1000,
+    '3d': 3 * 24 * 60 * 60 * 1000,
+    '1w': 7 * 24 * 60 * 60 * 1000
+};
+
 const calculateFibLevels = (chartData: PriceDataPoint[]) => {
     if (!chartData || chartData.length < 2) return { gp: null, fib786: null };
 
@@ -621,6 +634,96 @@ export const checkAllAlerts = (
                     
                     if (newState.inPullback !== currentState.inPullback) {
                         setAlertStates(prev => ({ ...prev, [stateKey]: newState }));
+                    }
+                }
+            }
+        }
+    }
+
+    // --- Super Strategy Alerts ---
+    const superStrategyTimeframes: Timeframe[] = ['15m', '1h', '4h', '1d'];
+    if (superStrategyTimeframes.includes(timeframe) && data.waveTrend1 && data.waveTrend2 && data.kiwiHunt) {
+        // Shared Signal Definitions
+        const lastWt1 = data.waveTrend1[data.waveTrend1.length - 1];
+        const prevWt1 = data.waveTrend1[data.waveTrend1.length - 2];
+        const lastWt2 = data.waveTrend2[data.waveTrend2.length - 1];
+        const prevWt2 = data.waveTrend2[data.waveTrend2.length - 2];
+        const isWtBullishCross = lastWt1.value > lastWt2.value && prevWt1.value <= prevWt2.value;
+        const isWtBearishCross = lastWt1.value < lastWt2.value && prevWt1.value >= prevWt2.value;
+        const isWtConfluenceBuySignal = isWtBullishCross && lastWt2.value < -53;
+        const isWtConfluenceSellSignal = isWtBearishCross && lastWt2.value > 53;
+
+        const { q1, trigger, q3, q5 } = data.kiwiHunt;
+        if (q1.length > 1 && trigger.length > 1 && q3.length > 0 && q5.length > 0) {
+            const lastQ1 = q1[q1.length - 1];
+            const prevQ1 = q1[q1.length - 2];
+            const lastTrigger = trigger.find(p => p.time === lastQ1.time);
+            const prevTrigger = trigger.find(p => p.time === prevQ1.time);
+            const lastQ3 = q3.find(p => p.time === lastQ1.time);
+            const lastQ5 = q5.find(p => p.time === lastQ1.time);
+
+            if (lastTrigger && prevTrigger && lastQ3 && lastQ5) {
+                const isKhBullishCross = prevQ1.value <= prevTrigger.value && lastQ1.value > lastTrigger.value;
+                const isKhBearishCross = prevQ1.value >= prevTrigger.value && lastQ1.value < lastTrigger.value;
+                const isHuntBuySignal = isKhBullishCross && lastQ1.value <= 20 && lastQ3.value <= -4 && lastQ5.value <= -4;
+                const isHuntSellSignal = isKhBearishCross && lastQ1.value >= 80 && lastQ3.value >= 104 && lastQ5.value >= 104;
+                const isCrazyBuySignal = isKhBullishCross && lastQ3.value <= -4;
+                const isCrazySellSignal = isKhBearishCross && lastQ3.value >= 104;
+                
+                // Strategy 1: Ultimate Confluence
+                if (alertConditions.superConfluenceBuy && isWtConfluenceBuySignal && isHuntBuySignal && canFire('super-confluence-buy')) {
+                    alertsToFire.push({ symbol, timeframe, type: 'super-confluence-buy' });
+                    setFired('super-confluence-buy');
+                }
+                if (alertConditions.superConfluenceSell && isWtConfluenceSellSignal && isHuntSellSignal && canFire('super-confluence-sell')) {
+                    alertsToFire.push({ symbol, timeframe, type: 'super-confluence-sell' });
+                    setFired('super-confluence-sell');
+                }
+
+                // Strategy 2: Confirmed Reversal
+                const armedBuyKey = `${symbol}-${timeframe}-confirmed-reversal-buy-armed`;
+                const armedSellKey = `${symbol}-${timeframe}-confirmed-reversal-sell-armed`;
+                const armedBuyState = alertStates[armedBuyKey];
+                const armedSellState = alertStates[armedSellKey];
+                const confirmationWindow = 5 * TIMEFRAME_TO_MS[timeframe];
+
+                if (alertConditions.confirmedReversalBuy) {
+                    if (isWtConfluenceBuySignal) setAlertStates(prev => ({ ...prev, [armedBuyKey]: { armedAt: now } }));
+                    if (armedBuyState && (isHuntBuySignal || isCrazyBuySignal)) {
+                        if (now - armedBuyState.armedAt <= confirmationWindow && canFire('confirmed-reversal-buy')) {
+                            alertsToFire.push({ symbol, timeframe, type: 'confirmed-reversal-buy' });
+                            setFired('confirmed-reversal-buy');
+                        }
+                        setAlertStates(prev => { const s = { ...prev }; delete s[armedBuyKey]; return s; });
+                    } else if (armedBuyState && now - armedBuyState.armedAt > confirmationWindow) {
+                        setAlertStates(prev => { const s = { ...prev }; delete s[armedBuyKey]; return s; });
+                    }
+                }
+                if (alertConditions.confirmedReversalSell) {
+                    if (isWtConfluenceSellSignal) setAlertStates(prev => ({ ...prev, [armedSellKey]: { armedAt: now } }));
+                    if (armedSellState && (isHuntSellSignal || isCrazySellSignal)) {
+                        if (now - armedSellState.armedAt <= confirmationWindow && canFire('confirmed-reversal-sell')) {
+                            alertsToFire.push({ symbol, timeframe, type: 'confirmed-reversal-sell' });
+                            setFired('confirmed-reversal-sell');
+                        }
+                        setAlertStates(prev => { const s = { ...prev }; delete s[armedSellKey]; return s; });
+                    } else if (armedSellState && now - armedSellState.armedAt > confirmationWindow) {
+                        setAlertStates(prev => { const s = { ...prev }; delete s[armedSellKey]; return s; });
+                    }
+                }
+                
+                // Strategy 3: Trend Rider
+                if (alertConditions.trendRiderBuy) {
+                    const isMacroBull = lastWt2.value > 0;
+                    const stateKey_buyTrend = `${symbol}-${timeframe}-kh-cont-state`;
+                    const currentState_buyTrend = alertStates[stateKey_buyTrend] || { inPullback: false };
+                    let buyTrendSignalFiredThisTick = false;
+                    if (currentState_buyTrend.inPullback && isKhBullishCross && lastQ1.value > 50) {
+                        buyTrendSignalFiredThisTick = true;
+                    }
+                    if (isMacroBull && buyTrendSignalFiredThisTick && canFire('trend-rider-buy')) {
+                        alertsToFire.push({ symbol, timeframe, type: 'trend-rider-buy' });
+                        setFired('trend-rider-buy');
                     }
                 }
             }

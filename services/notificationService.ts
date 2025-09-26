@@ -278,6 +278,41 @@ export const getNotificationDetails = (notification: Notification): Notification
             accentColor = 'bg-cyan-400';
             iconColor = 'text-cyan-400';
             break;
+        case 'super-confluence-buy':
+            icon = 'fa-star-of-life';
+            title = `Super Confluence Buy`;
+            body = `${notification.symbol} (${notification.timeframe}) shows KiwiHunt & WaveTrend buy signals.`;
+            accentColor = 'bg-lime-400';
+            iconColor = 'text-lime-400';
+            break;
+        case 'super-confluence-sell':
+            icon = 'fa-star-of-life';
+            title = `Super Confluence Sell`;
+            body = `${notification.symbol} (${notification.timeframe}) shows KiwiHunt & WaveTrend sell signals.`;
+            accentColor = 'bg-fuchsia-500';
+            iconColor = 'text-fuchsia-500';
+            break;
+        case 'confirmed-reversal-buy':
+            icon = 'fa-check-double';
+            title = `Confirmed Reversal Buy`;
+            body = `${notification.symbol} (${notification.timeframe}) WaveTrend bottom confirmed by KiwiHunt.`;
+            accentColor = 'bg-teal-400';
+            iconColor = 'text-teal-400';
+            break;
+        case 'confirmed-reversal-sell':
+            icon = 'fa-check-double';
+            title = `Confirmed Reversal Sell`;
+            body = `${notification.symbol} (${notification.timeframe}) WaveTrend top confirmed by KiwiHunt.`;
+            accentColor = 'bg-orange-500';
+            iconColor = 'text-orange-500';
+            break;
+        case 'trend-rider-buy':
+            icon = 'fa-person-running';
+            title = `Trend Rider Buy`;
+            body = `${notification.symbol} (${notification.timeframe}) Bullish pullback signal in a macro uptrend.`;
+            accentColor = 'bg-cyan-400';
+            iconColor = 'text-cyan-400';
+            break;
     }
 
     return { icon, title, body, accentColor, iconColor };

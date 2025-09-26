@@ -85,6 +85,11 @@ export const DARK_THEME_SETTINGS: Settings = {
         kiwiHuntHunt: false,
         kiwiHuntCrazy: false,
         kiwiHuntBuyTrend: false,
+        superConfluenceBuy: false,
+        superConfluenceSell: false,
+        confirmedReversalBuy: false,
+        confirmedReversalSell: false,
+        trendRiderBuy: false,
     },
     sendDiscordNotifications: false,
 };
@@ -140,6 +145,11 @@ export const LIGHT_THEME_SETTINGS: Settings = {
         kiwiHuntHunt: false,
         kiwiHuntCrazy: false,
         kiwiHuntBuyTrend: false,
+        superConfluenceBuy: false,
+        superConfluenceSell: false,
+        confirmedReversalBuy: false,
+        confirmedReversalSell: false,
+        trendRiderBuy: false,
     },
     sendDiscordNotifications: false,
 };
