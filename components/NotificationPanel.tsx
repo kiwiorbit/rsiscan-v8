@@ -7,22 +7,46 @@ interface NotificationItemProps {
     notification: Notification;
 }
 
+const formatTimestamp = (timestamp: number): string => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    
+    const isToday = date.getFullYear() === now.getFullYear() &&
+                    date.getMonth() === now.getMonth() &&
+                    date.getDate() === now.getDate();
+
+    if (isToday) {
+        return date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    } else {
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+        });
+    }
+};
+
 const NotificationItem: React.FC<NotificationItemProps> = ({ notification }) => {
-    // Get all details including colors for the accent bar and icon
     const { icon, title, body, accentColor, iconColor } = getNotificationDetails(notification);
 
     return (
-        // The parent is relative with extra left padding to make space for the accent bar
         <div className={`relative p-3 pl-6 border-b border-light-border dark:border-dark-border last:border-b-0 hover:bg-light-border/50 dark:hover:bg-dark-border/50 transition-colors`}>
-            {/* The colored accent border, matching the toast notifications */}
             <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${accentColor}`}></div>
             
             <div className="flex items-start gap-3">
-                {/* Use the specific iconColor for the icon */}
                 <i className={`fa-solid ${icon} ${iconColor} text-lg mt-1`}></i>
-                <div>
-                    <p className="font-bold text-sm text-dark-text dark:text-light-text">{title}</p>
-                    <p className="text-xs text-medium-text-light dark:text-medium-text">{body}</p>
+                <div className="flex-grow min-w-0">
+                    <div className="flex justify-between items-baseline">
+                        <p className="font-bold text-sm text-dark-text dark:text-light-text truncate pr-2" title={title}>{title}</p>
+                        <span className="text-xs text-medium-text-light dark:text-medium-text flex-shrink-0 font-mono">
+                            {formatTimestamp(notification.timestamp)}
+                        </span>
+                    </div>
+                    <p className="text-xs text-medium-text-light dark:text-medium-text mt-0.5">{body}</p>
                 </div>
             </div>
         </div>
@@ -40,7 +64,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ isOpen, notificat
 
     return (
         <div
-            className="absolute top-full mt-2 w-64 max-w-[calc(100vw-2rem)] bg-light-bg/95 dark:bg-dark-bg/95 backdrop-blur-lg border border-light-border/50 dark:border-dark-border/50 rounded-xl shadow-2xl z-50 animate-dropdown-in flex flex-col overflow-hidden md:right-0 left-1/2 -translate-x-[60%] md:left-auto md:translate-x-0 origin-top md:origin-top-right"
+            className="absolute top-full mt-2 w-72 max-w-[calc(100vw-2rem)] bg-light-bg/95 dark:bg-dark-bg/95 backdrop-blur-lg border border-light-border/50 dark:border-dark-border/50 rounded-xl shadow-2xl z-50 animate-dropdown-in flex flex-col overflow-hidden md:right-0 left-1/2 -translate-x-[60%] md:left-auto md:translate-x-0 origin-top md:origin-top-right"
         >
             <div className="flex justify-between items-center p-3 border-b border-light-border dark:border-dark-border">
                 <h3 className="font-bold text-dark-text dark:text-light-text">Notifications</h3>

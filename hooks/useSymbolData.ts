@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { SymbolData, Timeframe } from '../types';
+import type { SymbolData, Timeframe, Settings } from '../types';
 import { fetchRsiForSymbol, fetchPreviousWeeklyLevels } from '../services/binanceService';
 
 const DATA_FETCH_INTERVAL = 60000; // 1 minute
 
-const useSymbolData = ({ userSymbols, timeframe }: { userSymbols: string[], timeframe: Timeframe }) => {
+const useSymbolData = ({ userSymbols, timeframe, settings }: { userSymbols: string[], timeframe: Timeframe, settings: Settings }) => {
     const [symbolsData, setSymbolsData] = useState<Record<string, SymbolData>>({});
     const [loading, setLoading] = useState(true);
     const [lastDataFetch, setLastDataFetch] = useState<Date | null>(null);
@@ -50,7 +50,7 @@ const useSymbolData = ({ userSymbols, timeframe }: { userSymbols: string[], time
 
         try {
             // Only fetch the core RSI data in the main loop. Weekly levels are now on-demand.
-            const promises = userSymbols.map(symbol => fetchRsiForSymbol(symbol, timeframe, 80));
+            const promises = userSymbols.map(symbol => fetchRsiForSymbol(symbol, timeframe, settings.candlesDisplayed));
 
             const results = await Promise.all(promises);
             
@@ -81,7 +81,7 @@ const useSymbolData = ({ userSymbols, timeframe }: { userSymbols: string[], time
                 setLoading(false);
             }
         }
-    }, [userSymbols, timeframe]);
+    }, [userSymbols, timeframe, settings.candlesDisplayed]);
 
     useEffect(() => {
         fetchData(true);

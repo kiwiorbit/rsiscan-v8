@@ -1,3 +1,4 @@
+
 import type { Timeframe, Settings } from './types';
 
 const RAW_SYMBOLS: string[] = [
@@ -48,13 +49,16 @@ export const DARK_THEME_SETTINGS: Settings = {
     waveTrend2Color: '#c026d3', // fuchsia-600
     showHeatmapView: false,
     showPriceView: false,
-    showStochView: true,
+    showStochView: false,
     showWaveTrendView: false,
-    showKiwiHuntView: false,
+    showKiwiHuntView: true,
+    showVolumeView: true,
+    showVolumeBarView: false,
     kiwiHuntQ1Color: '#2196f3', // blue
     kiwiHuntTriggerColor: '#ffffff', // white
     kiwiHuntQ3Color: '#f44336', // red
     kiwiHuntQ5Color: '#ffeb3b', // yellow
+    candlesDisplayed: 80,
     alertConditions: {
         extreme: false,
         rsiSmaCross: false,
@@ -79,17 +83,16 @@ export const DARK_THEME_SETTINGS: Settings = {
         pocRejection: false,
         valueAreaEdgeRejection: false,
         valueAreaBreakout: false,
-        pocBounceLowAnchor: false,
-        pocRejectionHighAnchor: false,
-        breakoutHighAnchorVAH: false,
-        kiwiHuntHunt: false,
-        kiwiHuntCrazy: false,
+        kiwiHuntHuntBuy: false,
+        kiwiHuntHuntSell: false,
+        kiwiHuntCrazyBuy: false,
+        kiwiHuntCrazySell: false,
         kiwiHuntBuyTrend: false,
-        superConfluenceBuy: false,
-        superConfluenceSell: false,
-        confirmedReversalBuy: false,
-        confirmedReversalSell: false,
-        trendRiderBuy: false,
+        significantVolumeSpike: false,
+        volumeAbsorption: false,
+        breakoutVolumeConfirmation: false,
+        exhaustionVolumeDivergence: false,
+        extremeNetVolumeSkew: false,
     },
     sendDiscordNotifications: false,
 };
@@ -108,13 +111,16 @@ export const LIGHT_THEME_SETTINGS: Settings = {
     waveTrend2Color: '#a21caf', // fuchsia-700
     showHeatmapView: false,
     showPriceView: false,
-    showStochView: true,
+    showStochView: false,
     showWaveTrendView: false,
-    showKiwiHuntView: false,
+    showKiwiHuntView: true,
+    showVolumeView: true,
+    showVolumeBarView: false,
     kiwiHuntQ1Color: '#1e88e5', // blue
     kiwiHuntTriggerColor: '#212121', // dark grey
     kiwiHuntQ3Color: '#e53935', // red
     kiwiHuntQ5Color: '#fdd835', // yellow
+    candlesDisplayed: 80,
     alertConditions: {
         extreme: false,
         rsiSmaCross: false,
@@ -139,17 +145,16 @@ export const LIGHT_THEME_SETTINGS: Settings = {
         pocRejection: false,
         valueAreaEdgeRejection: false,
         valueAreaBreakout: false,
-        pocBounceLowAnchor: false,
-        pocRejectionHighAnchor: false,
-        breakoutHighAnchorVAH: false,
-        kiwiHuntHunt: false,
-        kiwiHuntCrazy: false,
+        kiwiHuntHuntBuy: false,
+        kiwiHuntHuntSell: false,
+        kiwiHuntCrazyBuy: false,
+        kiwiHuntCrazySell: false,
         kiwiHuntBuyTrend: false,
-        superConfluenceBuy: false,
-        superConfluenceSell: false,
-        confirmedReversalBuy: false,
-        confirmedReversalSell: false,
-        trendRiderBuy: false,
+        significantVolumeSpike: false,
+        volumeAbsorption: false,
+        breakoutVolumeConfirmation: false,
+        exhaustionVolumeDivergence: false,
+        extremeNetVolumeSkew: false,
     },
     sendDiscordNotifications: false,
 };

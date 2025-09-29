@@ -35,6 +35,17 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         }
     };
 
+    const handleCandleDisplayChange = () => {
+        const current = settings.candlesDisplayed;
+        if (current === 80) {
+            onSettingChange('candlesDisplayed', 100);
+        } else if (current === 100) {
+            onSettingChange('candlesDisplayed', 120);
+        } else { // Includes 120 and falls back to 80
+            onSettingChange('candlesDisplayed', 80);
+        }
+    };
+
     return (
         <>
             <div className="fixed inset-0 bg-black bg-opacity-60 z-40 transition-opacity duration-300" onClick={onClose}></div>
@@ -107,6 +118,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                         <ul className="space-y-1">
                             <li>
                                 <div className="p-2.5 rounded-lg bg-light-card/80 dark:bg-dark-card/80 flex items-center justify-between">
+                                    <label className="font-medium text-sm pr-4 text-dark-text dark:text-light-text flex-grow">Candles Displayed</label>
+                                    <button
+                                        onClick={handleCandleDisplayChange}
+                                        className="w-16 h-8 text-center font-semibold rounded-md bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border focus:ring-1 focus:ring-primary-light dark:focus:ring-primary outline-none transition-colors hover:bg-light-border dark:hover:bg-dark-border"
+                                        aria-label={`Change number of candles displayed. Current value: ${settings.candlesDisplayed}`}
+                                    >
+                                        {settings.candlesDisplayed}
+                                    </button>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="p-2.5 rounded-lg bg-light-card/80 dark:bg-dark-card/80 flex items-center justify-between">
                                     <label htmlFor="stoch-view-toggle" className="font-medium text-sm cursor-pointer pr-4 text-dark-text dark:text-light-text flex-grow">Stochastic View</label>
                                     <div className="relative">
                                         <input type="checkbox" id="stoch-view-toggle" className="sr-only peer" checked={settings.showStochView} onChange={(e) => onSettingChange('showStochView', e.target.checked)} />
@@ -146,6 +169,24 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                     <label htmlFor="price-view-toggle" className="font-medium text-sm cursor-pointer pr-4 text-dark-text dark:text-light-text flex-grow">Price View</label>
                                     <div className="relative">
                                         <input type="checkbox" id="price-view-toggle" className="sr-only peer" checked={settings.showPriceView} onChange={(e) => onSettingChange('showPriceView', e.target.checked)} />
+                                        <div className="w-10 h-5 bg-light-border peer-focus:outline-none rounded-full peer dark:bg-dark-border peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-dark-card after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary-light dark:peer-checked:bg-primary"></div>
+                                    </div>
+                                </div>
+                            </li>
+                             <li>
+                                <div className="p-2.5 rounded-lg bg-light-card/80 dark:bg-dark-card/80 flex items-center justify-between">
+                                    <label htmlFor="volume-view-toggle" className="font-medium text-sm cursor-pointer pr-4 text-dark-text dark:text-light-text flex-grow">Volume Delta View</label>
+                                    <div className="relative">
+                                        <input type="checkbox" id="volume-view-toggle" className="sr-only peer" checked={settings.showVolumeView} onChange={(e) => onSettingChange('showVolumeView', e.target.checked)} />
+                                        <div className="w-10 h-5 bg-light-border peer-focus:outline-none rounded-full peer dark:bg-dark-border peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-dark-card after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary-light dark:peer-checked:bg-primary"></div>
+                                    </div>
+                                </div>
+                            </li>
+                             <li>
+                                <div className="p-2.5 rounded-lg bg-light-card/80 dark:bg-dark-card/80 flex items-center justify-between">
+                                    <label htmlFor="volume-bar-view-toggle" className="font-medium text-sm cursor-pointer pr-4 text-dark-text dark:text-light-text flex-grow">Volume Bar View</label>
+                                    <div className="relative">
+                                        <input type="checkbox" id="volume-bar-view-toggle" className="sr-only peer" checked={settings.showVolumeBarView} onChange={(e) => onSettingChange('showVolumeBarView', e.target.checked)} />
                                         <div className="w-10 h-5 bg-light-border peer-focus:outline-none rounded-full peer dark:bg-dark-border peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-dark-card after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary-light dark:peer-checked:bg-primary"></div>
                                     </div>
                                 </div>

@@ -222,27 +222,6 @@ export const getNotificationDetails = (notification: Notification): Notification
             accentColor = 'bg-purple-500';
             iconColor = 'text-purple-500';
             break;
-        case 'poc-bounce-low-anchor':
-            icon = 'fa-person-digging';
-            title = `Low-Anchored POC Bounce`;
-            body = `${notification.symbol} (${notification.timeframe}) bounced from POC anchored to recent low.`;
-            accentColor = 'bg-sky-500';
-            iconColor = 'text-sky-500';
-            break;
-        case 'poc-rejection-high-anchor':
-            icon = 'fa-person-falling';
-            title = `High-Anchored POC Rejection`;
-            body = `${notification.symbol} (${notification.timeframe}) rejected from POC anchored to recent high.`;
-            accentColor = 'bg-orange-500';
-            iconColor = 'text-orange-500';
-            break;
-        case 'breakout-high-anchor-vah':
-            icon = 'fa-rocket';
-            title = `Acceptance Above Value`;
-            body = `${notification.symbol} (${notification.timeframe}) broke above value area from recent high.`;
-            accentColor = 'bg-teal-500';
-            iconColor = 'text-teal-500';
-            break;
         case 'kiwi-hunt-buy':
             icon = 'fa-rocket';
             title = `KiwiHunt: Hunt Buy`;
@@ -278,40 +257,76 @@ export const getNotificationDetails = (notification: Notification): Notification
             accentColor = 'bg-cyan-400';
             iconColor = 'text-cyan-400';
             break;
-        case 'super-confluence-buy':
-            icon = 'fa-star-of-life';
-            title = `Super Confluence Buy`;
-            body = `${notification.symbol} (${notification.timeframe}) shows KiwiHunt & WaveTrend buy signals.`;
-            accentColor = 'bg-lime-400';
-            iconColor = 'text-lime-400';
+        // New Volume Based Alerts
+        case 'significant-bullish-volume-spike':
+            icon = 'fa-bolt';
+            title = `Bullish Volume Spike`;
+            body = `${notification.symbol} (${notification.timeframe}) saw a significant spike in buying volume.`;
+            accentColor = 'bg-yellow-500';
+            iconColor = 'text-yellow-500';
             break;
-        case 'super-confluence-sell':
-            icon = 'fa-star-of-life';
-            title = `Super Confluence Sell`;
-            body = `${notification.symbol} (${notification.timeframe}) shows KiwiHunt & WaveTrend sell signals.`;
+        case 'significant-bearish-volume-spike':
+            icon = 'fa-bolt';
+            title = `Bearish Volume Spike`;
+            body = `${notification.symbol} (${notification.timeframe}) saw a significant spike in selling volume.`;
+            accentColor = 'bg-yellow-500';
+            iconColor = 'text-yellow-500';
+            break;
+        case 'bullish-volume-absorption':
+            icon = 'fa-magnet';
+            title = `Bullish Volume Absorption`;
+            body = `${notification.symbol} (${notification.timeframe}) shows signs of selling being absorbed.`;
             accentColor = 'bg-fuchsia-500';
             iconColor = 'text-fuchsia-500';
             break;
-        case 'confirmed-reversal-buy':
-            icon = 'fa-check-double';
-            title = `Confirmed Reversal Buy`;
-            body = `${notification.symbol} (${notification.timeframe}) WaveTrend bottom confirmed by KiwiHunt.`;
-            accentColor = 'bg-teal-400';
-            iconColor = 'text-teal-400';
+        case 'bearish-volume-absorption':
+            icon = 'fa-magnet';
+            title = `Bearish Volume Absorption`;
+            body = `${notification.symbol} (${notification.timeframe}) shows signs of buying being absorbed.`;
+            accentColor = 'bg-fuchsia-500';
+            iconColor = 'text-fuchsia-500';
             break;
-        case 'confirmed-reversal-sell':
-            icon = 'fa-check-double';
-            title = `Confirmed Reversal Sell`;
-            body = `${notification.symbol} (${notification.timeframe}) WaveTrend top confirmed by KiwiHunt.`;
+        case 'bullish-breakout-volume':
+            icon = 'fa-rocket';
+            title = `Bullish Breakout Confirmation`;
+            body = `${notification.symbol} (${notification.timeframe}) broke resistance on high volume.`;
+            accentColor = 'bg-sky-500';
+            iconColor = 'text-sky-500';
+            break;
+        case 'bearish-breakout-volume':
+            icon = 'fa-anchor';
+            title = `Bearish Breakdown Confirmation`;
+            body = `${notification.symbol} (${notification.timeframe}) broke support on high volume.`;
+            accentColor = 'bg-purple-500';
+            iconColor = 'text-purple-500';
+            break;
+        case 'bullish-exhaustion-divergence':
+            icon = 'fa-battery-quarter';
+            title = `Bullish Exhaustion Divergence`;
+            body = `${notification.symbol} (${notification.timeframe}) made a new low on weaker volume.`;
             accentColor = 'bg-orange-500';
             iconColor = 'text-orange-500';
             break;
-        case 'trend-rider-buy':
-            icon = 'fa-person-running';
-            title = `Trend Rider Buy`;
-            body = `${notification.symbol} (${notification.timeframe}) Bullish pullback signal in a macro uptrend.`;
-            accentColor = 'bg-cyan-400';
-            iconColor = 'text-cyan-400';
+        case 'bearish-exhaustion-divergence':
+            icon = 'fa-battery-quarter';
+            title = `Bearish Exhaustion Divergence`;
+            body = `${notification.symbol} (${notification.timeframe}) made a new high on weaker volume.`;
+            accentColor = 'bg-orange-500';
+            iconColor = 'text-orange-500';
+            break;
+        case 'extreme-buying-pressure':
+            icon = 'fa-balance-scale-left';
+            title = `Extreme Buying Pressure`;
+            body = `${notification.symbol} (${notification.timeframe}) shows overwhelming buy volume.`;
+            accentColor = 'bg-teal-500';
+            iconColor = 'text-teal-500';
+            break;
+        case 'extreme-selling-pressure':
+            icon = 'fa-balance-scale-right';
+            title = `Extreme Selling Pressure`;
+            body = `${notification.symbol} (${notification.timeframe}) shows overwhelming sell volume.`;
+            accentColor = 'bg-rose-500';
+            iconColor = 'text-rose-500';
             break;
     }
 

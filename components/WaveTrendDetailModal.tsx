@@ -106,7 +106,7 @@ const WaveTrendDetailModal: React.FC<WaveTrendDetailModalProps> = ({ symbol, dat
                             aria-label="View Stochastic RSI chart"
                             title="View Stochastic RSI Chart"
                         >
-                            <i className="fa-solid fa-chart-simple"></i>
+                            <i className="fa-solid fa-tornado"></i>
                         </button>
                         <button 
                             onClick={onSwitchToRsiChart} 

@@ -83,7 +83,7 @@ export const ToastContainer: React.FC<{
   onFinish: () => void;
   onClick?: (toast: Notification) => void;
 }> = ({ toast, onFinish, onClick }) => {
-    const isClickable = toast ? !['5m', '15m'].includes(toast.timeframe) : false;
+    const isClickable = toast ? !['5m'].includes(toast.timeframe) : false;
     
     return React.createElement(
         'div',
@@ -131,11 +131,12 @@ const useNotifications = ({ currentTimeframe }: UseNotificationsProps) => {
         }
     }, [activeToast, toastQueues, currentTimeframe]);
 
-    const addNotification = useCallback((notification: Omit<Notification, 'id' | 'read'>, showToast: boolean = false) => {
+    const addNotification = useCallback((notification: Omit<Notification, 'id' | 'read' | 'timestamp'>, showToast: boolean = false) => {
         const newNotification: Notification = {
             ...notification,
             id: Date.now() + Math.random(),
             read: false,
+            timestamp: Date.now(),
         };
         
         setNotifications(prev => [newNotification, ...prev].slice(0, NOTIFICATION_LIMIT));

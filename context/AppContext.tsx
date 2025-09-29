@@ -39,7 +39,7 @@ interface AppContextType {
     // Notifications
     activeToast: Notification | null;
     notifications: Notification[];
-    addNotification: (notification: Omit<Notification, 'id' | 'read'>, showToast?: boolean) => void;
+    addNotification: (notification: Omit<Notification, 'id' | 'read' | 'timestamp'>, showToast?: boolean) => void;
     handleToastFinished: () => void;
     markNotificationsAsRead: () => void;
     clearNotifications: () => void;
@@ -57,6 +57,7 @@ interface AppContextType {
     handleSelectPriceSymbol: (symbol: string) => void;
     handleSelectWaveTrendSymbol: (symbol: string) => void;
     handleSelectKiwiHuntSymbol: (symbol: string) => void;
+    handleSelectVolumeSymbol: (symbol: string) => void;
     handleCloseModal: () => void;
     handleSettingsToggle: () => void;
     setIsSettingsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -96,7 +97,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         sortOrder, viewMode, page, timeframe, handleTimeframeChange, 
         ...userSettingsHandlers 
     } = useUserSettings();
-    const { symbolsData, loading, lastDataFetch, fetchWeeklyLevelsForSymbol } = useSymbolData({ userSymbols, timeframe });
+    const { symbolsData, loading, lastDataFetch, fetchWeeklyLevelsForSymbol } = useSymbolData({ userSymbols, timeframe, settings });
     const { notifications, activeToast, addNotification, handleToastFinished, markNotificationsAsRead, clearNotifications, ToastContainer } = useNotifications({ currentTimeframe: timeframe });
     
     // --- Alert State ---
@@ -174,6 +175,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                 case 'kiwiHunt-asc':
                 case 'kiwiHunt-desc':
                     return data.kiwiHunt?.q1?.[data.kiwiHunt.q1.length - 1]?.value ?? -Infinity;
+                case 'green-volume-desc':
+                    if (!data.klines || data.klines.length === 0) return -Infinity;
+                    return data.klines.reduce((sum, kline) => sum + kline.takerBuyQuoteVolume, 0);
+                case 'red-volume-desc':
+                    if (!data.klines || data.klines.length === 0) return -Infinity;
+                    return data.klines.reduce((sum, kline) => sum + (kline.quoteVolume - kline.takerBuyQuoteVolume), 0);
+                case 'buy-count-desc':
+                    if (!data.klines || data.klines.length === 0) return -Infinity;
+                    return data.klines.reduce((count, kline) => kline.takerBuyQuoteVolume >= (kline.quoteVolume / 2) ? count + 1 : count, 0);
+                case 'sell-count-desc':
+                     if (!data.klines || data.klines.length === 0) return -Infinity;
+                    return data.klines.reduce((count, kline) => kline.takerBuyQuoteVolume < (kline.quoteVolume / 2) ? count + 1 : count, 0);
+                case 'total-volume-desc':
+                case 'total-volume-asc':
+                    if (!data.klines || data.klines.length === 0) return -Infinity;
+                    return data.klines.reduce((sum, kline) => sum + kline.quoteVolume, 0);
+                case 'net-volume-desc':
+                case 'net-volume-asc':
+                    if (!data.klines || data.klines.length === 0) return -Infinity;
+                    const buyVol = data.klines.reduce((sum, kline) => sum + kline.takerBuyQuoteVolume, 0);
+                    const sellVol = data.klines.reduce((sum, kline) => sum + (kline.quoteVolume - kline.takerBuyQuoteVolume), 0);
+                    return buyVol - sellVol;
                 default:
                     return 0;
             }
@@ -229,6 +252,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const handleSelectWaveTrendSymbol = (symbol: string) => handleSelectSymbol(symbol, 'waveTrend');
     const handleSelectKiwiHuntSymbol = (symbol: string) => handleSelectSymbol(symbol, 'kiwiHunt');
+    const handleSelectVolumeSymbol = (symbol: string) => handleSelectSymbol(symbol, 'volume');
     const handleSettingsToggle = () => setIsSettingsOpen(prev => !prev);
     const handleSearchChange = (term: string) => setSearchTerm(term);
     
@@ -297,7 +321,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         notifications, activeToast, addNotification, handleToastFinished, markNotificationsAsRead, clearNotifications, ToastContainer,
         handleNotificationClick,
         activeSymbol, activeModal, modalInitialState, isSettingsOpen, isAssetModalOpen, isAlertsModalOpen,
-        handleSelectRsiSymbol, handleSelectStochSymbol, handleSelectPriceSymbol, handleSelectWaveTrendSymbol, handleSelectKiwiHuntSymbol, handleCloseModal,
+        handleSelectRsiSymbol, handleSelectStochSymbol, handleSelectPriceSymbol, handleSelectWaveTrendSymbol, handleSelectKiwiHuntSymbol, handleSelectVolumeSymbol, handleCloseModal,
         handleSettingsToggle,
         setIsSettingsOpen, setIsAssetModalOpen, setIsAlertsModalOpen,
         searchTerm, handleSearchChange,

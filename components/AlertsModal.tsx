@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import type { Settings, AlertConditions } from '../types';
 
@@ -40,7 +41,7 @@ const AlertToggle: React.FC<{
 };
 
 const TABS = [
-    'Indicator', 'Price-Based', 'VWAP', 'Volume Profile', 'Anchored Profile', 'Confluence Strategy', 'KiwiHunt', 'Super Strategy'
+    'Indicator', 'Price-Based', 'VWAP', 'Volume Profile', 'Confluence Strategy', 'KiwiHunt', 'Volume Based'
 ];
 
 const AlertsModal: React.FC<AlertsModalProps> = ({ isOpen, onClose, settings, onAlertConditionChange }) => {
@@ -123,15 +124,6 @@ const AlertsModal: React.FC<AlertsModalProps> = ({ isOpen, onClose, settings, on
                             </ul>
                         </div>
                     )}
-                     {activeTab === 'Anchored Profile' && (
-                        <div>
-                             <ul className="space-y-2">
-                                <AlertToggle condition="pocBounceLowAnchor" label="Bounce from Low-Anchored POC" description="Price bounces from the POC calculated from the last strong low, w/ Stoch confirmation. (1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                                <AlertToggle condition="pocRejectionHighAnchor" label="Rejection from High-Anchored POC" description="Price rejects from the POC calculated from the last strong high, w/ Stoch confirmation. (1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                                <AlertToggle condition="breakoutHighAnchorVAH" label="Acceptance Above High-Anchored Value" description="Price breaks and accepts above the Value Area from the last strong high, on volume. (1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                            </ul>
-                        </div>
-                    )}
                      {activeTab === 'Confluence Strategy' && (
                         <div>
                             <ul className="space-y-2">
@@ -144,24 +136,22 @@ const AlertsModal: React.FC<AlertsModalProps> = ({ isOpen, onClose, settings, on
                      {activeTab === 'KiwiHunt' && (
                         <div>
                             <ul className="space-y-2">
-                                <AlertToggle condition="kiwiHuntHunt" label="Hunt Signals" description="Hunt Buy & Hunt Sell. Highest quality signals based on a perfect confluence of events. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                                <AlertToggle condition="kiwiHuntCrazy" label="Crazy Signals" description="Crazy Buy & Crazy Sell. Strong signals indicating strength from weakness, and vice-versa. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="kiwiHuntHuntBuy" label="Hunt Buy Signal" description="Highest quality buy signal based on a perfect confluence of events. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="kiwiHuntHuntSell" label="Hunt Sell Signal" description="Highest quality sell signal based on a perfect confluence of events. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="kiwiHuntCrazyBuy" label="Crazy Buy Signal" description="Strong signal indicating strength from weakness. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="kiwiHuntCrazySell" label="Crazy Sell Signal" description="Strong signal indicating weakness from strength. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
                                 <AlertToggle condition="kiwiHuntBuyTrend" label="Buy Trend" description="Signals that a shallow pullback is likely over and the bullish trend is resuming. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
                             </ul>
                         </div>
                     )}
-                     {activeTab === 'Super Strategy' && (
+                     {activeTab === 'Volume Based' && (
                         <div>
-                            <h4 className="px-1 pb-2 font-bold text-dark-text dark:text-light-text">Super Confluence Strategies</h4>
-                            <p className="px-1 pb-4 text-sm text-medium-text-light dark:text-medium-text">
-                                These high-conviction alerts combine signals from both WaveTrend and KiwiHunt to identify the highest probability setups.
-                            </p>
                             <ul className="space-y-2">
-                                <AlertToggle condition="superConfluenceBuy" label="Ultimate Confluence Buy" description="KiwiHunt 'Hunt Buy' AND WaveTrend 'Confluence Buy' fire at the same time. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                                <AlertToggle condition="superConfluenceSell" label="Ultimate Confluence Sell" description="KiwiHunt 'Hunt Sell' AND a bearish WaveTrend cross in the overbought zone. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                                <AlertToggle condition="confirmedReversalBuy" label="Confirmed Reversal Buy" description="WaveTrend finds the bottoming area, KiwiHunt confirms the reversal. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                                <AlertToggle condition="confirmedReversalSell" label="Confirmed Reversal Sell" description="WaveTrend finds the topping area, KiwiHunt confirms the reversal. (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
-                                <AlertToggle condition="trendRiderBuy" label="Trend Rider Buy" description="A KiwiHunt 'Buy Trend' signal occurs during a clear bullish macro trend (WT2 > 0). (15m, 1h, 4h, 1d)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="significantVolumeSpike" label="Significant Volume Spike" description="Volume of last candle is >250% of its 20-period average. (15m, 1h, 4h)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="volumeAbsorption" label="Volume Absorption" description="High volume candle with a long wick and small body, signaling rejection. (15m, 1h, 4h)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="breakoutVolumeConfirmation" label="Breakout Volume Confirmation" description="Price closes outside 20-period range on high volume (>150% average). (15m, 1h, 4h)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="exhaustionVolumeDivergence" label="Exhaustion Volume (Divergence)" description="Price makes a new high/low, but on lower volume than the previous swing. (15m, 1h, 4h)" settings={settings} onChange={onAlertConditionChange} />
+                                <AlertToggle condition="extremeNetVolumeSkew" label="Extreme Net Volume Skew" description="Net Buy or Sell volume accounts for >70% of total volume over the period. (15m, 1h, 4h)" settings={settings} onChange={onAlertConditionChange} />
                             </ul>
                         </div>
                     )}

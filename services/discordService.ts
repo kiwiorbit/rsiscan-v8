@@ -34,7 +34,8 @@ const colorMap: Record<string, number> = {
  * @param notification The notification object containing alert details.
  */
 export const sendDiscordWebhook = async (
-    notification: Omit<Notification, 'id' | 'read'>
+    // FIX: Changed the type to align with what checkAllAlerts returns.
+    notification: Omit<Notification, 'id' | 'read' | 'timestamp'>
 ): Promise<void> => {
     // Enrich the notification with display details (title, body, color, etc.)
     const details = getNotificationDetails(notification as Notification);

@@ -1,4 +1,5 @@
 
+
 import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import type { SymbolData, Settings, Timeframe, Drawing, DrawingTool } from '../types';
@@ -295,7 +296,7 @@ const Modal: React.FC<ModalProps> = ({ symbol, data, onClose, settings, timefram
                             aria-label="View Stochastic RSI chart"
                             title="View Stochastic RSI Chart"
                         >
-                            <i className="fa-solid fa-chart-simple"></i>
+                            <i className="fa-solid fa-tornado"></i>
                         </button>
                         <button 
                             onClick={onSwitchToPriceChart} 

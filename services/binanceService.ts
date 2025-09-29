@@ -196,24 +196,28 @@ export const fetchRsiForSymbol = async (symbol: string, timeframe: Timeframe, li
     const url = `${baseUrl}?symbol=${apiSymbol}&interval=${timeframe}&limit=${fetchLimit}`;
     const response = await fetch(url);
     if (!response.ok) {
-        return { rsi: [], sma: [], priceSma: [], stochK: [], stochD: [], waveTrend1: [], waveTrend2: [], vwap: [], price: 0, volume: 0, klines: [] };
+        return { rsi: [], sma: [], priceSma: [], stochK: [], stochD: [], waveTrend1: [], waveTrend2: [], vwap: [], price: 0, volume: 0, quoteVolume: 0, klines: [] };
     }
     const klines: any[][] = await response.json();
     
     if (klines.length === 0) {
-        return { rsi: [], sma: [], priceSma: [], stochK: [], stochD: [], waveTrend1: [], waveTrend2: [], vwap: [], price: 0, volume: 0, klines: [] };
+        return { rsi: [], sma: [], priceSma: [], stochK: [], stochD: [], waveTrend1: [], waveTrend2: [], vwap: [], price: 0, volume: 0, quoteVolume: 0, klines: [] };
     }
 
     const priceDataPoints: PriceDataPoint[] = klines.map(k => ({
         time: k[0],
         open: parseFloat(k[1]), high: parseFloat(k[2]), low: parseFloat(k[3]), close: parseFloat(k[4]),
-        volume: parseFloat(k[5]), takerBuyVolume: parseFloat(k[9]),
+        volume: parseFloat(k[5]),
+        quoteVolume: parseFloat(k[7]),
+        takerBuyVolume: parseFloat(k[9]),
+        takerBuyQuoteVolume: parseFloat(k[10]),
     }));
     
     const priceObjectsForSma = priceDataPoints.map(p => ({ time: p.time, value: p.close }));
 
     const price = priceDataPoints.length > 0 ? priceDataPoints[priceDataPoints.length - 1].close : 0;
     const volume = priceDataPoints.length > 0 ? priceDataPoints[priceDataPoints.length - 1].volume : 0;
+    const quoteVolume = priceDataPoints.length > 0 ? priceDataPoints[priceDataPoints.length - 1].quoteVolume : 0;
 
     const rsiData = calculateRSI(klines, rsiLength);
     const smaData = calculateSMA(rsiData, smaLength);
@@ -241,7 +245,10 @@ export const fetchRsiForSymbol = async (symbol: string, timeframe: Timeframe, li
                 const dailyPriceDataPoints: PriceDataPoint[] = dailyKlinesRaw.map(k => ({
                     time: k[0],
                     open: parseFloat(k[1]), high: parseFloat(k[2]), low: parseFloat(k[3]), close: parseFloat(k[4]),
-                    volume: parseFloat(k[5]), takerBuyVolume: parseFloat(k[9]),
+                    volume: parseFloat(k[5]),
+                    quoteVolume: parseFloat(k[7]),
+                    takerBuyVolume: parseFloat(k[9]),
+                    takerBuyQuoteVolume: parseFloat(k[10]),
                 }));
                 dailyVwapData = calculateVWAP(dailyPriceDataPoints);
             }
@@ -266,19 +273,6 @@ export const fetchRsiForSymbol = async (symbol: string, timeframe: Timeframe, li
         vwapAnchoredLow = calculateVWAP(klinesFromLow);
     }
 
-    // --- Anchored Volume Profile Calculations ---
-    let volumeProfileFromLow: VolumeProfileData | undefined | null = undefined;
-    if (lowPivotIndex !== null) {
-        const klinesFromLow = priceDataPoints.slice(lowPivotIndex);
-        volumeProfileFromLow = calculateVolumeProfile(klinesFromLow);
-    }
-
-    let volumeProfileFromHigh: VolumeProfileData | undefined | null = undefined;
-    if (highPivotIndex !== null) {
-        const klinesFromHigh = priceDataPoints.slice(highPivotIndex);
-        volumeProfileFromHigh = calculateVolumeProfile(klinesFromHigh);
-    }
-
     const sliceData = <T,>(arr: T[] | undefined): T[] | undefined => arr ? arr.slice(-limit) : undefined;
 
 
@@ -299,10 +293,8 @@ export const fetchRsiForSymbol = async (symbol: string, timeframe: Timeframe, li
             q3: sliceData(kiwiHuntData.q3)!,
             q5: sliceData(kiwiHuntData.q5)!,
         } : undefined,
-        price, volume, klines: priceDataPoints.slice(-limit),
+        price, volume, quoteVolume, klines: priceDataPoints.slice(-limit),
         volumeProfile: volumeProfile ?? undefined,
-        volumeProfileFromLow: volumeProfileFromLow ?? undefined,
-        volumeProfileFromHigh: volumeProfileFromHigh ?? undefined,
     };
 };
 

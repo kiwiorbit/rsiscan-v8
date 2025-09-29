@@ -1,4 +1,5 @@
 
+
 import React, { useEffect } from 'react';
 import { AppProvider, useAppContext } from './context/AppContext';
 import CryptoHeader from './components/CryptoHeader';
@@ -8,11 +9,14 @@ import PriceGrid from './components/PriceGrid';
 import StochGrid from './components/StochGrid';
 import WaveTrendGrid from './components/WaveTrendGrid';
 import KiwiHuntGrid from './components/KiwiHuntGrid';
+import VolumeGrid from './components/VolumeGrid';
+import VolumeBarGrid from './components/VolumeBarGrid';
 import Modal from './components/Modal';
 import PriceDetailModal from './components/PriceDetailModal';
 import StochDetailModal from './components/StochDetailModal';
 import WaveTrendDetailModal from './components/WaveTrendDetailModal';
 import KiwiHuntDetailModal from './components/KiwiHuntDetailModal';
+import VolumeDetailModal from './components/VolumeDetailModal';
 import SettingsPanel from './components/SettingsPanel';
 import Footer from './components/Footer';
 import AssetListModal from './components/AssetListModal';
@@ -88,6 +92,7 @@ const AppContent: React.FC = () => {
         handleSelectPriceSymbol,
         handleSelectWaveTrendSymbol,
         handleSelectKiwiHuntSymbol,
+        handleSelectVolumeSymbol,
         handleCloseModal,
         handleSettingsToggle,
         setIsSettingsOpen,
@@ -110,7 +115,7 @@ const AppContent: React.FC = () => {
     const isWaveTrendAllowed = allowedWaveTrendTimeframes.includes(timeframe);
     
     const allowedKiwiHuntTimeframes = ['15m', '1h', '4h', '1d'];
-    const isKiwiHuntAllowed = allowedKiwiHuntTimeframes.includes(timeframe);
+    const isKiwiHuntAllowed = allowedWaveTrendTimeframes.includes(timeframe);
 
     useEffect(() => {
         if (viewMode === 'waveTrend' && !isWaveTrendAllowed) {
@@ -160,6 +165,24 @@ const AppContent: React.FC = () => {
                 default: return <>Sort by Q1</>;
             }
         }
+        if (viewMode === 'volume') {
+            switch (sortOrder) {
+                case 'buy-count-desc': return <>Buys <i className="fa-solid fa-arrow-down text-xs"></i></>;
+                case 'sell-count-desc': return <>Sells <i className="fa-solid fa-arrow-down text-xs"></i></>;
+                case 'net-volume-desc': return <>Net Vol <i className="fa-solid fa-arrow-down text-xs"></i></>;
+                case 'net-volume-asc': return <>Net Vol <i className="fa-solid fa-arrow-up text-xs"></i></>;
+                default: return <>Sort by Volume</>;
+            }
+        }
+        if (viewMode === 'volume-bar') {
+             switch (sortOrder) {
+                case 'green-volume-desc': return <>Buy Vol <i className="fa-solid fa-arrow-down text-xs"></i></>;
+                case 'red-volume-desc': return <>Sell Vol <i className="fa-solid fa-arrow-down text-xs"></i></>;
+                case 'total-volume-desc': return <>Total Vol <i className="fa-solid fa-arrow-down text-xs"></i></>;
+                case 'total-volume-asc': return <>Total Vol <i className="fa-solid fa-arrow-up text-xs"></i></>;
+                default: return <>Sort by Volume</>;
+            }
+        }
         switch (sortOrder) {
             case 'rsi-asc': return <>RSI <i className="fa-solid fa-arrow-up text-xs"></i></>;
             case 'rsi-desc': return <>RSI <i className="fa-solid fa-arrow-down text-xs"></i></>;
@@ -189,7 +212,7 @@ const AppContent: React.FC = () => {
                     <div className="flex flex-wrap justify-end items-center gap-4 mb-4">
                         <div className="flex items-center gap-1 bg-light-card dark:bg-dark-card p-1 rounded-lg border border-light-border dark:border-dark-border">
                             <button onClick={() => handleViewModeChange('chart')} className={`px-3 py-2 text-sm rounded-md transition ${viewMode === 'chart' ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg' : 'text-medium-text-light dark:text-medium-text hover:bg-light-border dark:hover:bg-dark-border'}`} aria-label="RSI Chart View" title="RSI Chart View"><i className="fa-solid fa-chart-line"></i></button>
-                            {settings.showStochView && <button onClick={() => handleViewModeChange('stoch')} className={`px-3 py-2 text-sm rounded-md transition ${viewMode === 'stoch' ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg' : 'text-medium-text-light dark:text-medium-text hover:bg-light-border dark:hover:bg-dark-border'}`} aria-label="Stochastic RSI View" title="Stochastic RSI View"><i className="fa-solid fa-chart-simple"></i></button>}
+                            {settings.showStochView && <button onClick={() => handleViewModeChange('stoch')} className={`px-3 py-2 text-sm rounded-md transition ${viewMode === 'stoch' ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg' : 'text-medium-text-light dark:text-medium-text hover:bg-light-border dark:hover:bg-dark-border'}`} aria-label="Stochastic RSI View" title="Stochastic RSI View"><i className="fa-solid fa-tornado"></i></button>}
                             {settings.showKiwiHuntView && (
                                 <button 
                                     onClick={() => handleViewModeChange('kiwiHunt')} 
@@ -214,6 +237,8 @@ const AppContent: React.FC = () => {
                             )}
                             {settings.showHeatmapView && <button onClick={() => handleViewModeChange('heatmap')} className={`px-3 py-2 text-sm rounded-md transition ${viewMode === 'heatmap' ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg' : 'text-medium-text-light dark:text-medium-text hover:bg-light-border dark:hover:bg-dark-border'}`} aria-label="Heatmap View" title="Heatmap View"><i className="fa-solid fa-table-cells"></i></button>}
                             {settings.showPriceView && <button onClick={() => handleViewModeChange('price')} className={`px-3 py-2 text-sm rounded-md transition ${viewMode === 'price' ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg' : 'text-medium-text-light dark:text-medium-text hover:bg-light-border dark:hover:bg-dark-border'}`} aria-label="Price Chart View" title="Price Chart View"><i className="fa-solid fa-chart-area"></i></button>}
+                            {settings.showVolumeView && <button onClick={() => handleViewModeChange('volume')} className={`px-3 py-2 text-sm rounded-md transition ${viewMode === 'volume' ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg' : 'text-medium-text-light dark:text-medium-text hover:bg-light-border dark:hover:bg-dark-border'}`} aria-label="Volume Delta View" title="Volume Delta View"><i className="fa-solid fa-bars-staggered"></i></button>}
+                            {settings.showVolumeBarView && <button onClick={() => handleViewModeChange('volume-bar')} className={`px-3 py-2 text-sm rounded-md transition ${viewMode === 'volume-bar' ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg' : 'text-medium-text-light dark:text-medium-text hover:bg-light-border dark:hover:bg-dark-border'}`} aria-label="Volume Bar View" title="Volume Bar View"><i className="fa-solid fa-chart-simple"></i></button>}
                         </div>
                         <div className="flex items-center gap-4">
                             <button onClick={handleShowFavoritesOnlyToggle} className={`px-4 py-2 text-sm font-semibold rounded-lg transition flex items-center gap-2 border ${showFavoritesOnly ? 'bg-primary-light dark:bg-primary text-white dark:text-dark-bg border-transparent' : 'bg-light-card dark:bg-dark-card text-medium-text-light dark:text-medium-text border-light-border dark:border-dark-border hover:bg-light-border dark:hover:bg-dark-border'}`} aria-pressed={showFavoritesOnly} aria-label="Toggle favorites filter">
@@ -230,6 +255,8 @@ const AppContent: React.FC = () => {
                     {viewMode === 'kiwiHunt' && isKiwiHuntAllowed && <KiwiHuntGrid loading={loading} symbols={displayedSymbols} symbolsData={symbolsData} onSelectSymbol={handleSelectKiwiHuntSymbol} settings={settings} favorites={favorites} onToggleFavorite={toggleFavorite} />}
                     {viewMode === 'heatmap' && <Heatmap loading={loading} symbols={displayedSymbols} symbolsData={symbolsData} onSelectSymbol={handleSelectRsiSymbol} favorites={favorites} onToggleFavorite={toggleFavorite} />}
                     {viewMode === 'price' && <PriceGrid loading={loading} symbols={displayedSymbols} symbolsData={symbolsData} onSelectSymbol={handleSelectPriceSymbol} settings={settings} favorites={favorites} onToggleFavorite={toggleFavorite} />}
+                    {viewMode === 'volume' && <VolumeGrid loading={loading} symbols={displayedSymbols} symbolsData={symbolsData} onSelectSymbol={handleSelectVolumeSymbol} settings={settings} favorites={favorites} onToggleFavorite={toggleFavorite} />}
+                    {viewMode === 'volume-bar' && <VolumeBarGrid loading={loading} symbols={displayedSymbols} symbolsData={symbolsData} onSelectSymbol={handleSelectVolumeSymbol} settings={settings} favorites={favorites} onToggleFavorite={toggleFavorite} sortOrder={sortOrder} />}
                 </main>
             </div>
             {activeModal === 'rsi' && activeSymbol && symbolsData[activeSymbol] && <Modal symbol={activeSymbol} data={symbolsData[activeSymbol]} onClose={handleCloseModal} settings={settings} timeframe={timeframe} onSwitchToPriceChart={handleSwitchToPriceChart} onNavigateToFullView={handleNavigateToFullView} onSwitchToStochChart={handleSwitchToStochChart} />}
@@ -237,6 +264,7 @@ const AppContent: React.FC = () => {
             {activeModal === 'stoch' && activeSymbol && symbolsData[activeSymbol] && <StochDetailModal symbol={activeSymbol} data={symbolsData[activeSymbol]} onClose={handleCloseModal} settings={settings} timeframe={timeframe} onSwitchToRsiChart={handleSwitchToRsiChart} onSwitchToPriceChart={handleSwitchToPriceChart} onNavigateToFullView={handleNavigateToStochFullView} onSwitchToWaveTrendChart={handleSwitchToWaveTrendChart} />}
             {activeModal === 'waveTrend' && activeSymbol && symbolsData[activeSymbol] && <WaveTrendDetailModal symbol={activeSymbol} data={symbolsData[activeSymbol]} onClose={handleCloseModal} settings={settings} timeframe={timeframe} onSwitchToRsiChart={handleSwitchToRsiChart} onSwitchToPriceChart={handleSwitchToPriceChart} onSwitchToStochChart={handleSwitchToStochChart} />}
             {activeModal === 'kiwiHunt' && activeSymbol && symbolsData[activeSymbol] && <KiwiHuntDetailModal symbol={activeSymbol} data={symbolsData[activeSymbol]} onClose={handleCloseModal} settings={settings} timeframe={timeframe} onSwitchToPriceChart={handleSwitchToPriceChart} />}
+            {activeModal === 'volume' && activeSymbol && symbolsData[activeSymbol] && <VolumeDetailModal symbol={activeSymbol} data={symbolsData[activeSymbol]} onClose={handleCloseModal} settings={settings} timeframe={timeframe} onSwitchToPriceChart={handleSwitchToPriceChart} onSwitchToRsiChart={handleSwitchToRsiChart} onSwitchToStochChart={handleSwitchToStochChart} />}
 
             <SettingsPanel 
                 isOpen={isSettingsOpen} 

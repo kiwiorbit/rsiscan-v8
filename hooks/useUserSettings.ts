@@ -139,6 +139,20 @@ const useUserSettings = () => {
                 if (prev === 'kiwiHunt-desc') return 'kiwiHunt-asc';
                 return 'default';
             }
+            if (currentView === 'volume') {
+                if (prev === 'default') return 'buy-count-desc';
+                if (prev === 'buy-count-desc') return 'sell-count-desc';
+                if (prev === 'sell-count-desc') return 'net-volume-desc';
+                if (prev === 'net-volume-desc') return 'net-volume-asc';
+                return 'default';
+            }
+            if (currentView === 'volume-bar') {
+                if (prev === 'default') return 'green-volume-desc';
+                if (prev === 'green-volume-desc') return 'red-volume-desc';
+                if (prev === 'red-volume-desc') return 'total-volume-desc';
+                if (prev === 'total-volume-desc') return 'total-volume-asc';
+                return 'default';
+            }
             // Default to RSI/Heatmap sort
             if (prev === 'default') return 'rsi-desc';
             if (prev === 'rsi-desc') return 'rsi-asc';
@@ -146,7 +160,11 @@ const useUserSettings = () => {
         });
     }, [viewMode]);
     
-    const handleViewModeChange = useCallback((mode: ViewMode) => setViewMode(mode), []);
+    const handleViewModeChange = useCallback((mode: ViewMode) => {
+        setViewMode(mode);
+        // Reset sort order when changing views because sort options are view-specific
+        setSortOrder('default');
+    }, []);
     
     const handleTimeframeChange = useCallback((tf: Timeframe) => setTimeframe(tf), []);
 
