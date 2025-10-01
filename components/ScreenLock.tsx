@@ -4,6 +4,9 @@ interface ScreenLockProps {
     onUnlock: () => void;
 }
 
+// Export the password so other parts of the app can reference it for validation.
+export const UNLOCK_PASSWORD = 'pluginsc';
+
 const ScreenLock: React.FC<ScreenLockProps> = ({ onUnlock }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -12,7 +15,7 @@ const ScreenLock: React.FC<ScreenLockProps> = ({ onUnlock }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (password === 'pluginsc') {
+        if (password === 'UNLOCK_PASSWORD') {
             setError('');
             onUnlock();
         } else {
