@@ -5,6 +5,7 @@ import useNotifications from '../hooks/useNotifications';
 import useSymbolData from '../hooks/useSymbolData';
 import { checkAllAlerts } from '../services/alertingService';
 import { sendDiscordWebhook } from '../services/discordService';
+import { UNLOCK_PASSWORD } from '../components/ScreenLock';
 
 interface AppContextType {
     isInitializing: boolean;
@@ -88,7 +89,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const [isAlertsModalOpen, setIsAlertsModalOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [isInitializing, setIsInitializing] = useState(() => !sessionStorage.getItem('hasSeenSplash'));
-    const [isLocked, setIsLocked] = useState(() => !sessionStorage.getItem('appIsUnlocked'));
+    const [isLocked, setIsLocked] = useState(() => {
+
+        const isUnlocked = sessionStorage.getItem('appIsUnlocked') === 'true';
+
+        const storedPassword = sessionStorage.getItem('appUnlockPassword');
+
+
+
+        // If the session was unlocked but the password doesn't match the current one, force a re-lock.
+
+        if (isUnlocked && storedPassword === UNLOCK_PASSWORD) {
+
+            return false; // Session is valid, app is unlocked.
+
+        }
+
+        // Otherwise, the app is locked. Clean up any stale session items.
+
+        sessionStorage.removeItem('appIsUnlocked');
+
+        sessionStorage.removeItem('appUnlockPassword');
+
+        return true;
+
+    });
     const [modalInitialState, setModalInitialState] = useState<Record<string, boolean>>({});
     
     // --- Custom Hooks ---
@@ -222,6 +247,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // --- Lock Handlers ---
     const unlockApp = useCallback(() => {
         sessionStorage.setItem('appIsUnlocked', 'true');
+        sessionStorage.setItem('appUnlockPassword', UNLOCK_PASSWORD);
         setIsLocked(false);
     }, []);
 
