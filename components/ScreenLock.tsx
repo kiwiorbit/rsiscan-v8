@@ -12,7 +12,7 @@ const ScreenLock: React.FC<ScreenLockProps> = ({ onUnlock }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (password === 'plugin') {
+        if (password === 'pluginsc') {
             setError('');
             onUnlock();
         } else {
